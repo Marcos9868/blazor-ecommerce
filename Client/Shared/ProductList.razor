@@ -1,3 +1,5 @@
+@inject HttpClient Http
+
 <ul class="list-unstyled">
   @foreach(var product in Products)
   {
@@ -19,31 +21,12 @@
 </ul>
 
 @code {
-  private static List<Product> Products = new List<Product>
+  private static List<Product> Products = new List<Product>();
+
+  protected override async Task OnInitializedAsync()
   {
-    new Product
-    {
-      IdProduct = 1,
-      Title = "Black Cavendish Tobacco",
-      Description = "A smoothy and sweetness tobacco",
-      Image_Url = "",
-      Price = 9.99m
-    },
-    new Product
-    {
-      IdProduct = 2,
-      Title = "1984 - George Orhwell",
-      Description = "This books tells about comunism destroy our world",
-      Image_Url = "",
-      Price = 19.99m
-    },
-    new Product
-    {
-      IdProduct = 3,
-      Title = "SmartWatch",
-      Description = "SmartWatch to monitore your heartbeats",
-      Image_Url = "",
-      Price = 29.99m
-    }
-  };
+    var result = await Http.GetFromJsonAsync<List<Product>>("products");
+    if (result != null)
+      Products = result;
+  }
 }
