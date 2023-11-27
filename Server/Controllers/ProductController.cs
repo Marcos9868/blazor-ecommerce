@@ -35,6 +35,8 @@ namespace BlazorEcommerce.Server.Controllers
         };
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("/products")]
         public async Task<IActionResult> GetProducts()
         {
