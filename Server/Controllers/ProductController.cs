@@ -1,5 +1,6 @@
 using BlazorEcommerce.Server.Data;
 using Microsoft.AspNetCore.Mvc;
+using BlazorEcommerce.Server.Contracts;
 
 namespace BlazorEcommerce.Server.Controllers
 {
@@ -7,24 +8,24 @@ namespace BlazorEcommerce.Server.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IProductService _productService;
 
-        public ProductController(DataContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;    
+            _productService = productService;    
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("/products")]
-        public async Task<IActionResult> GetProducts()
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProducts()
         {
-            var Products = await _context.Products.ToListAsync();
-            if (Products is null)
+            var result = await _productService.GetProducts();
+            if (result is null)
                 return BadRequest("Unable to list products");
                 
-            return Ok(Products);
+            return Ok(result);
         }
     }
 }
