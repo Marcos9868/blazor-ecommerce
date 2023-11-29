@@ -1,7 +1,9 @@
 global using BlazorEcommerce.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using BlazorEcommerce.Server.Data;
+using BlazorEcommerce.Server.Mapping;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,7 +13,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
+ServiceMapping.AddServices(builder.Services);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
